@@ -1,21 +1,38 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Tenta forçar o play programaticamente para garantir funcionamento no mobile
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Autoplay impedido pelo navegador/dispositivo:", error);
+        });
+      }
+    }
+  }, []);
+
   return (
     <section className="relative w-full h-screen overflow-hidden">
       {/* Local Video Background */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <div className="absolute inset-0 bg-black/50 z-10" /> {/* Dark overlay to hide initial UI flashes and improve text readability */}
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover opacity-80"
         >
+          <source src="/videos/hero-bg.mp4" type="video/mp4" />
           <source src="/videos/hero-bg.webm" type="video/webm" />
           Seu navegador não suporta vídeos HTML5.
         </video>
@@ -89,7 +106,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.8 }}
         >
           <a
-            href="#orcamento"
+            href="/contato"
             className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold transition-all duration-200"
             style={{
               backgroundColor: "#C8102E",
