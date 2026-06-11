@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constantes visuais compartilhadas
@@ -703,7 +704,7 @@ export function DiagramaGenerico() {
 // Uso: const Diagrama = DIAGRAMAS[produto.slug] ?? DiagramaGenerico
 //      <Diagrama />
 // ═════════════════════════════════════════════════════════════════════════════
-export const DIAGRAMAS: Record<string, () => JSX.Element> = {
+export const DIAGRAMAS: Record<string, () => React.ReactElement> = {
   'duo-glass':                 DiagramaDuoGlass,
   'wall-glass-guarda-corpo':   DiagramaWallGlass,
   'fort-glass-multilaminado':  DiagramaFortGlass,
