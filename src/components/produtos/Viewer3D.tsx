@@ -6,6 +6,18 @@ import { OrbitControls, useGLTF, Environment, ContactShadows, Center } from '@re
 import * as THREE from 'three'
 import { Plus, Minus } from 'lucide-react'
 
+/**
+ * Sanity CDN não envia headers CORS para domínios externos.
+ * Em produção, roteamos os .glb pelo proxy Next.js /api/model
+ * que busca no servidor (sem restrição CORS) e repassa ao browser.
+ */
+function getModelUrl(url: string): string {
+  if (url.startsWith('https://cdn.sanity.io/')) {
+    return `/api/model?url=${encodeURIComponent(url)}`
+  }
+  return url
+}
+
 const CORES_PALETA = [
   { nome: 'Azul Real', hex: '#0B66C3' },
   { nome: 'Vermelho Terracota', hex: '#E25238' },
@@ -31,7 +43,7 @@ function Modelo({
   isExtraClear?: boolean
   frosted?: boolean
 }) {
-  const { scene } = useGLTF(url)
+  const { scene } = useGLTF(getModelUrl(url))
   const classifiedRef = useRef(false)
 
   useEffect(() => {
