@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Play } from "lucide-react";
 
 export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlayBlocked, setIsPlayBlocked] = useState(false);
 
   useEffect(() => {
     // Tenta forçar o play programaticamente para garantir funcionamento no mobile
@@ -14,6 +16,7 @@ export default function HeroSection() {
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
           console.log("Autoplay impedido pelo navegador/dispositivo:", error);
+          setIsPlayBlocked(true);
         });
       }
     }
@@ -172,6 +175,40 @@ export default function HeroSection() {
           Scroll
         </span>
       </motion.div>
+
+      {/* Botão de reprodução para caso de bloqueio por economia de energia */}
+      {isPlayBlocked && (
+        <motion.div
+          className="absolute bottom-6 right-4 md:bottom-8 md:right-16 z-20 flex items-center gap-3 bg-black/60 backdrop-blur-md border border-white/10 px-4 py-2.5 rounded-full shadow-lg"
+          initial={{ opacity: 0, scale: 0.9, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <button
+            onClick={() => {
+              if (videoRef.current) {
+                videoRef.current.play().then(() => {
+                  setIsPlayBlocked(false);
+                }).catch((err) => {
+                  console.log("Erro ao reproduzir manualmente:", err);
+                });
+              }
+            }}
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8102E] text-white hover:bg-[#A50D25] active:scale-95 transition-all duration-200 cursor-pointer shadow-md"
+            aria-label="Reproduzir vídeo"
+          >
+            <Play size={12} className="fill-white ml-0.5" />
+          </button>
+          <div className="flex flex-col text-left">
+            <span className="text-[10px] text-white font-semibold leading-tight">
+              Modo de economia ativo?
+            </span>
+            <span className="text-[9px] text-white/60 leading-tight font-light">
+              Clique para reproduzir o vídeo de fundo.
+            </span>
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 }
