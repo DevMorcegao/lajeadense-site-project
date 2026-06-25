@@ -11,7 +11,7 @@ export type ProdutoCard = {
 }
 
 export type ProdutoDetalhe = ProdutoCard & {
-  descricaoCompleta: any[]   // Portable Text (rich text do Sanity)
+  descricaoCompleta: any[]   // Texto Portável (rich text do Sanity)
   especificacoes: { label: string; valor: string }[]
   normasABNT: { codigo: string; descricao: string }[]
   aplicacoes: string[]

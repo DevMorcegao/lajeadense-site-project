@@ -214,10 +214,10 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
             </div>
           )}
 
-          {/* Separator */}
+          {/* Separador */}
           <div className="h-px bg-border-subtle" />
 
-          {/* CTAs */}
+          {/* Botões de Ação (CTAs) */}
           <div className="flex flex-col gap-3 w-full">
             <Link
               href={`/contato?produto=${produto.slug}`}
@@ -243,7 +243,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
 
         {/* Coluna Direita — Mídia */}
         <div className="p-2 flex flex-col gap-2 min-w-0">
-          {/* Viewer 3D */}
+          {/* Visualizador 3D */}
           {produto.modelo3dUrl ? (
             <div className="rounded-sm overflow-hidden">
               <Viewer3D modelUrl={produto.modelo3dUrl} isConfigurable={produto.slug === 'vidro-pintado'} isPolarizable={produto.slug === 'vidro-polarizado-vidro-inteligente'} isExtraClear={produto.slug === 'vidro-extra-clear'} />
@@ -292,7 +292,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Modal do Lightbox */}
       <AnimatePresence>
         {lightboxOpen && produto.galeria && produto.galeria.length > 0 && (
           <motion.div
@@ -396,7 +396,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
 
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Modal do Lightbox */}
     </article>
   )
 }

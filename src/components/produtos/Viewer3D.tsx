@@ -47,7 +47,7 @@ function Modelo({
   const classifiedRef = useRef(false)
 
   useEffect(() => {
-    // ── PHASE 1: Classify meshes (runs ONCE per model load) ──
+    // ── FASE 1: Classificar malhas (executa UMA VEZ por carregamento do modelo) ──
     if (!classifiedRef.current) {
       classifiedRef.current = true
 
@@ -93,7 +93,7 @@ function Modelo({
               child.userData.originalColor = mat.color.getHexString()
             }
           } else if (isExtraClear) {
-            // For Extra Clear: first glass = extra clear, rest = normal glass
+            // Para Extra Clear: primeiro vidro = extra clear, restante = vidro normal
             if (extraClearIndex === 0) {
               child.userData.isExtraClearGlass = true
             } else {
@@ -108,8 +108,8 @@ function Modelo({
         }
       })
 
-      // Fallback for configurable products where the model has no pre-saturated colors:
-      // promote ALL transparent glass parts to paintable panels so the color picker works
+      // Fallback para produtos configuráveis onde o modelo não tem cores pré-saturadas:
+      // promover TODAS as partes de vidro transparente a painéis pintáveis para que o seletor de cores funcione
       if (isConfigurable && !foundPainted) {
         let promoted = false
         scene.traverse((child) => {
@@ -126,8 +126,8 @@ function Modelo({
           }
         })
 
-        // Second-level fallback: if no glass was detected at all (model has no glass names
-        // or transparency), find the largest meshes and promote them to paintable
+        // Segundo nível de fallback: se nenhum vidro foi detectado (modelo não tem nomes de vidro
+        // ou transparência), encontrar as maiores malhas e promovê-las a pintáveis
         if (!promoted) {
           const meshes: { mesh: THREE.Mesh; area: number }[] = []
           scene.traverse((child) => {
@@ -144,10 +144,10 @@ function Modelo({
             }
           })
 
-          // Sort by surface area descending — the largest meshes are the glass panels
+          // Ordenar por área de superfície decrescente — as maiores malhas são os painéis de vidro
           meshes.sort((a, b) => b.area - a.area)
 
-          // Promote the top meshes (up to half of all, minimum 1) as paintable panels
+          // Promover as principais malhas (até metade do total, no mínimo 1) como painéis pintáveis
           const count = Math.max(1, Math.ceil(meshes.length / 2))
           for (let i = 0; i < Math.min(count, meshes.length); i++) {
             const child = meshes[i].mesh
@@ -164,12 +164,12 @@ function Modelo({
       }
     }
 
-    // ── PHASE 2: Apply materials (runs on every colorOverride / frosted change) ──
+    // ── FASE 2: Aplicar materiais (executa a cada mudança de colorOverride / fosco) ──
     scene.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return
 
       if (child.userData.isExtraClearGlass) {
-        // Extra Clear glass — ultra transparent, no green tint
+        // Vidro Extra Clear — ultra transparente, sem tom esverdeado
         child.material = new THREE.MeshPhysicalMaterial({
           color: new THREE.Color(0xfcfcfc),
           transparent: true,
@@ -187,7 +187,7 @@ function Modelo({
         child.castShadow = true
         child.receiveShadow = true
       } else if (child.userData.isTransparentGlass) {
-        // For polarizable products: switch between transparent and frosted
+        // Para produtos polarizáveis: alternar entre transparente e fosco
         if (isPolarizable && frosted) {
           child.material = new THREE.MeshPhysicalMaterial({
             color: new THREE.Color(0xf0f0f0),
@@ -204,7 +204,7 @@ function Modelo({
             depthWrite: false,
           })
         } else {
-          // Standard premium glass material (with green tint for normal glass)
+          // Material de vidro premium padrão (com tom esverdeado para vidro normal)
           child.material = new THREE.MeshPhysicalMaterial({
             color: new THREE.Color(0xd5e8eb),
             transparent: true,
@@ -233,7 +233,7 @@ function Modelo({
         child.castShadow = true
         child.receiveShadow = true
       } else {
-        // Enhance frame and non-glass profiles (no color override)
+        // Melhorar perfis de estrutura e não-vidro (sem substituição de cor)
         const mat = child.material as THREE.Material
         if (mat instanceof THREE.MeshStandardMaterial) {
           mat.envMapIntensity = 1.8
@@ -282,11 +282,11 @@ export function Viewer3D({
 }) {
   const [webGLSupported, setWebGLSupported] = useState(true)
   const [mounted, setMounted] = useState(false)
-  // Color only matters for configurable (painted) products — undefined by default so it doesn't tint other models
+  // A cor só importa para produtos configuráveis (pintados) — indefinido por padrão para não colorir outros modelos
   const [selectedColor, setSelectedColor] = useState<string | undefined>(
     isConfigurable ? '#0B66C3' : undefined,
   )
-  // Frosted state for polarizable products
+  // Estado fosco para produtos polarizáveis
   const [frosted, setFrosted] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const controlsRef = useRef<any>(null)
@@ -303,7 +303,7 @@ export function Viewer3D({
     if (!gl) queueMicrotask(() => setWebGLSupported(false))
   }, [])
 
-  // Disable scroll zoom on canvas
+  // Desativar zoom de rolagem no canvas
   useEffect(() => {
     const stopWheelOnCanvas = (e: WheelEvent) => {
       if (e.target && containerRef.current?.contains(e.target as Node)) {
@@ -371,7 +371,7 @@ export function Viewer3D({
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      {/* 3D Canvas Container */}
+      {/* Contêiner do Canvas 3D */}
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden rounded-md border border-border-subtle shadow-sm"
@@ -380,7 +380,7 @@ export function Viewer3D({
           background: 'radial-gradient(circle, #FCFCFA 0%, var(--color-surface-section) 100%)',
         }}
       >
-        {/* ─── Color Palette Overlay (Desktop — Vidro Pintado only) ─── */}
+        {/* ─── Painel de Paleta de Cores (Desktop — apenas Vidro Pintado) ─── */}
         {configurable && (
           <div className="hidden md:block absolute top-4 left-4 z-10 bg-surface-card/90 backdrop-blur-md border border-border-subtle p-3 rounded-lg shadow-md max-w-[280px]">
             <span className="text-[10px] uppercase font-bold tracking-wider text-text-secondary block mb-2 font-body select-none">
@@ -405,7 +405,7 @@ export function Viewer3D({
           </div>
         )}
 
-        {/* ─── Polarizado Toggle Overlay (Desktop — Vidro Polarizado only) ─── */}
+        {/* ─── Alternador Polarizado (Desktop — apenas Vidro Polarizado) ─── */}
         {isPolarizable && (
           <div className="hidden md:flex absolute top-4 left-4 z-10 bg-surface-card/90 backdrop-blur-md border border-border-subtle p-3 rounded-lg shadow-md items-center gap-3">
             <span className="text-[10px] uppercase font-bold tracking-wider text-text-secondary font-body select-none whitespace-nowrap">
@@ -432,7 +432,7 @@ export function Viewer3D({
               >
                 Privacidade
               </button>
-              {/* Sliding indicator */}
+              {/* Indicador deslizante */}
               <div
                 className="absolute top-0.5 bottom-0.5 rounded-full bg-[#0D0D0D] transition-all duration-300 ease-out"
                 style={{
@@ -518,7 +518,7 @@ export function Viewer3D({
         </Canvas>
       </div>
 
-      {/* ─── Mobile Color Panel (Vidro Pintado only) ─── */}
+      {/* ─── Painel de Cores Mobile (apenas Vidro Pintado) ─── */}
       {configurable && (
         <div className="md:hidden w-full bg-surface-card border border-border-subtle p-3.5 rounded-lg shadow-sm">
           <span className="text-xs uppercase font-bold tracking-wider text-text-secondary block mb-3 font-body text-center select-none">
@@ -543,7 +543,7 @@ export function Viewer3D({
         </div>
       )}
 
-      {/* ─── Mobile Polarizado Toggle (Vidro Polarizado only) ─── */}
+      {/* ─── Alternador Polarizado Mobile (apenas Vidro Polarizado) ─── */}
       {isPolarizable && (
         <div className="md:hidden w-full bg-surface-card border border-border-subtle p-3.5 rounded-lg shadow-sm">
           <span className="text-xs uppercase font-bold tracking-wider text-text-secondary block mb-3 font-body text-center select-none">

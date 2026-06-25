@@ -69,7 +69,7 @@ export const produtoSchema = defineType({
       name: 'descricaoCompleta',
       title: 'Descrição Completa',
       type: 'array',
-      of: [{ type: 'block' }],  // Rich text (bold, links, parágrafos)
+      of: [{ type: 'block' }],  // Texto rico (negrito, links, parágrafos)
       description: 'Texto completo exibido na página do produto.',
       validation: (Rule: any) => Rule.required(),
     }),

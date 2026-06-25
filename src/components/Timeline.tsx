@@ -77,7 +77,7 @@ interface TimelineImageStackProps {
 function TimelineImageStack({ images, title, isEven }: TimelineImageStackProps) {
   const [topIndex, setTopIndex] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
-  const [swipeDirection, setSwipeDirection] = useState(1); // 1 = right, -1 = left
+  const [swipeDirection, setSwipeDirection] = useState(1); // 1 = direita, -1 = esquerda
 
   const handleNext = () => {
     if (isSwiping || images.length <= 1) return;
@@ -121,7 +121,7 @@ function TimelineImageStack({ images, title, isEven }: TimelineImageStackProps) 
         const isTop = relativeIndex === 0;
         const isSecond = relativeIndex === 1;
 
-        // Render only the top 2 cards for optimum performance
+        // Renderiza apenas os 2 cards superiores para melhor desempenho
         if (relativeIndex > 1) return null;
 
         return (
@@ -174,7 +174,7 @@ function TimelineImageStack({ images, title, isEven }: TimelineImageStackProps) 
               priority={idx === 0}
             />
 
-            {/* Indicator badge for active image */}
+            {/* Indicador de imagem ativa */}
             {isTop && (
               <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-sm px-2 py-1 text-[9px] uppercase tracking-wider text-white font-medium flex items-center gap-1.5 border border-white/10 shadow-md">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C8102E] animate-pulse" />
@@ -185,7 +185,7 @@ function TimelineImageStack({ images, title, isEven }: TimelineImageStackProps) 
         );
       })}
 
-      {/* Elegant Action Button at the bottom of the card */}
+      {/* Botão de ação elegante no rodapé do card */}
       <div 
         className={`absolute -bottom-5 z-20 flex gap-2 ${
           isEven ? "left-0" : "right-0"
@@ -213,15 +213,15 @@ export default function Timeline() {
     offset: ["start center", "end 80%"],
   });
 
-  // Scale the center line based on scroll progress
+  // Escala a linha central com base no progresso da rolagem
   const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <div ref={containerRef} className="relative w-full py-16">
-      {/* Central Line Background */}
+      {/* Fundo da Linha Central */}
       <div className="absolute left-[24px] md:left-1/2 top-0 bottom-0 w-[2px] bg-[#DDDCDA] -translate-x-1/2" />
 
-      {/* Central Line Animated Fill */}
+      {/* Preenchimento Animado da Linha Central */}
       <motion.div
         className="absolute left-[24px] md:left-1/2 top-0 bottom-0 w-[2px] bg-[#C8102E] -translate-x-1/2 origin-top"
         style={{ scaleY: lineScale }}
@@ -238,7 +238,7 @@ export default function Timeline() {
                 isEven ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
-              {/* Year and Connection Point */}
+              {/* Ano e Ponto de Conexão */}
               <div className="absolute left-[24px] md:left-1/2 -translate-x-1/2 flex items-center justify-center -mt-2 md:mt-0 z-20">
                 <motion.div
                   className="flex items-center justify-center w-4 h-4 rounded-full border-[3px] border-[#C8102E] bg-[#FFFFFF] shadow-[0_0_0_4px_#F5F4F2] overflow-hidden"
@@ -257,7 +257,7 @@ export default function Timeline() {
                 </motion.div>
               </div>
 
-              {/* Content Panel */}
+              {/* Painel de Conteúdo */}
               <motion.div
                 className={`w-full md:w-1/2 pl-12 md:px-12 flex flex-col ${
                   isEven ? "md:items-end md:text-right" : "md:items-start md:text-left"
@@ -286,7 +286,7 @@ export default function Timeline() {
                   {item.description}
                 </p>
                 
-                {/* Optional Image Stack for milestones */}
+                {/* Pilha de Imagens Opcional para marcos históricos */}
                 <TimelineImageStack 
                   images={item.images} 
                   title={item.title} 
@@ -294,7 +294,7 @@ export default function Timeline() {
                 />
               </motion.div>
 
-              {/* Empty space for the other half on desktop */}
+              {/* Espaço vazio para a outra metade no desktop */}
               <div className="hidden md:block md:w-1/2" />
             </div>
           );

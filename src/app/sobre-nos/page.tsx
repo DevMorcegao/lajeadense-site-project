@@ -84,11 +84,11 @@ export default function SobreNos() {
                   alt="Processos da Lajeadense Vidros" 
                   fill 
                   className="object-cover"
-                  unoptimized // GIFs should be unoptimized in Next.js
+                  unoptimized // GIFs devem ser carregados sem otimização no Next.js
                 />
               </div>
 
-              {/* Secondary History Image */}
+              {/* Imagem Histórica Secundária */}
               <div className="absolute bottom-0 left-0 w-[55%] h-[55%] z-30 shadow-[0_8px_32px_rgba(0,0,0,0.16)] border-[6px] border-[#FFFFFF]">
                 <Image 
                   src="/images/sobre/lajeadense-vidros-sobre-img2.webp" 
@@ -98,12 +98,12 @@ export default function SobreNos() {
                 />
               </div>
 
-              {/* Decorative technical lines */}
+              {/* Linhas técnicas decorativas */}
               <div className="absolute bottom-[20%] right-[-10%] w-[40%] h-[1px] bg-[#DDDCDA] z-10" />
               <div className="absolute top-[-8%] left-[20%] w-[1px] h-[40%] bg-[#DDDCDA] z-10" />
             </motion.div>
 
-            {/* Right: Text Content */}
+            {/* Direita: Conteúdo de Texto */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
