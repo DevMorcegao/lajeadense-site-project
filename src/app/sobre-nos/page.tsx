@@ -41,14 +41,14 @@ export default function SobreNos() {
               className="text-4xl sm:text-5xl md:text-7xl font-bold uppercase tracking-tight text-[#0D0D0D] mb-8"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Do vale do Taquari <br/> para o Brasil
+              TRADIÇÃO E <br/> INOVAÇÃO EM VIDROS
             </h1>
             
             <p 
               className="text-lg md:text-xl text-[#4B4B4B] max-w-2xl mx-auto leading-relaxed"
               style={{ fontFamily: 'var(--font-body)' }}
             >
-              Uma trajetória construída com precisão, segurança e a força de uma empresa familiar que há décadas molda o setor vidreiro do Rio Grande do Sul.
+              Uma história construída ao longo de décadas, com compromisso, segurança e dedicação ao setor vidreiro do Rio Grande do Sul.
             </p>
           </motion.div>
         </div>
@@ -125,10 +125,12 @@ export default function SobreNos() {
                   Empresa familiar fundada no ano de 1958 na cidade de Lajeado, estado do Rio Grande do Sul, com o nome Vidraçaria Lajeadense Ltda. Durante 36 anos a empresa desenvolveu suas atividades predominantemente no Vale do Taquari e Vale do Rio Pardo.
                 </p>
                 <p>
-                  No ano de 1994, com uma visão estratégica de futuro, foi aberta a filial em Porto Alegre, expandindo os negócios e direcionando o foco da empresa para a área de construção civil. Essa mudança marcou o início de uma nova era de grandes projetos e parcerias com construtoras renomadas.
-                </p>
+                  No ano de 1994, com uma visão estratégica a empresa expandiu os negócios para Porto Alegre. Essa mudança marcou o início de uma era de grandes parcerias com construtoras.                </p>
                 <p>
                   Os investimentos em uma nova sede em Lajeado, construída em 2002, juntamente com a aquisição de novos maquinários, equipamentos de ponta e novas tecnologias buscadas nas principais feiras da Europa, tem permitido um constante aperfeiçoamento dos produtos e serviços prestados, capacitando nossos funcionários para os desafios modernos.
+                </p>
+                <p>
+                  A partir do ano de 2023, a empresa enfrentou uma série de enchentes que impactaram significativamente toda a região e o estado do Rio Grande do Sul. Em decorrência desses eventos, a Lajeadense reconstruiu sua sede em um novo espaço, projetado para a ampliação da capacidade fabril e para atender às demandas de crescimento nos próximos anos.
                 </p>
               </div>
             </motion.div>

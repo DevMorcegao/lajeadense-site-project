@@ -31,7 +31,7 @@ export default async function ProdutosPage() {
             Nossa Linha de Produtos
           </h1>
           <p className="text-lg text-text-on-dark/70 max-w-2xl font-body">
-            Soluções técnicas de alto desempenho para cada etapa do seu projeto arquitetônico e estrutural.
+            Produtos desenvolvidos para transformar ideias em projetos seguros, funcionais e duradouros.
           </p>
         </div>
       </section>

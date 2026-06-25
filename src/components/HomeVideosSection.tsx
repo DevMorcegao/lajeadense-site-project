@@ -21,7 +21,7 @@ const videosData: VideoCard[] = [
     posterUrl: "/images/produtos/vidro-jumbo.webp",
   },
   {
-    title: "Wall Glass",
+    title: "Wallglass",
     subtitle: "Guarda-corpo Autoportante",
     description: "Segurança estrutural extrema com design minimalista de fixação oculta, testado rigorosamente.",
     videoUrl: "/videos/wall-glass.webm",

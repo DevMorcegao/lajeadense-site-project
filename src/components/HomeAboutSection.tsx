@@ -80,7 +80,7 @@ export default function HomeAboutSection() {
             >
               {/* As an introductory image, we'll use one of the About images */}
               <Image 
-                src="/images/home/lajeadense-vidros-sobre-img6.webp" 
+                src="/images/home/home-sobre.webp" 
                 alt="Instalações e projetos da Lajeadense Vidros"
                 fill
                 className="object-cover"
@@ -105,7 +105,7 @@ export default function HomeAboutSection() {
                 className="text-4xl lg:text-5xl font-bold text-[#0D0D0D]"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                +60
+                +65
               </div>
               <div 
                 className="text-sm font-medium text-[#4B4B4B]"

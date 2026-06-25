@@ -7,14 +7,14 @@ import { motion } from "framer-motion";
 
 const items = [
   {
-    title: "Duo Glass",
+    title: "Duoglass",
     subtitle: "Vidro Duplo Termoacústico",
     description: "Máximo isolamento térmico e acústico para esquadrias de alto padrão.",
     image: "/images/produtos/duo-glass-vidro-duplo-termoacustico.webp",
     link: "/portfolio",
   },
   {
-    title: "Wall Glass",
+    title: "Wallglass",
     subtitle: "Guarda-corpo Minimalista",
     description: "Transparência autoportante e máxima segurança certificada ABNT.",
     image: "/images/produtos/wall-glass-guarda-corpo.webp",

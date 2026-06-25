@@ -1,20 +1,20 @@
 import { Metadata } from 'next'
 import { client } from '@/lib/sanity'
-import { PORTFOLIO_PRODUTOS_QUERY } from '@/lib/queries'
-import { PortfolioGrid, PortfolioProduct } from '@/components/portfolio/PortfolioGrid'
+import { PORTFOLIO_QUERY } from '@/lib/queries'
+import { PortfolioGrid, PortfolioCategory } from '@/components/portfolio/PortfolioGrid'
 
 // Revalidação a cada 3 horas (Incremental Static Regeneration - ISR)
 export const revalidate = 10800
 
 export const metadata: Metadata = {
   title: 'Portfólio de Obras e Projetos | Lajeadense Vidros',
-  description: 'Galeria completa de projetos e soluções inovadoras em vidro da Lajeadense Vidros: Duo Glass, Wall Glass, laminados, temperados e mais. Confira fotos reais de obras executadas.',
+  description: 'Galeria completa de projetos e soluções inovadoras em vidro da Lajeadense Vidros: Duoglass, Wallglass, laminados, temperados e mais. Confira fotos reais de obras executadas.',
   alternates: { canonical: 'https://lajeadensevidros.com.br/portfolio' },
 }
 
 export default async function PortfolioPage() {
-  // Busca todos os produtos ativos do Sanity que tenham fotos na galeria
-  const produtos: PortfolioProduct[] = await client.fetch(PORTFOLIO_PRODUTOS_QUERY)
+  // Busca todas as categorias e fotos do portfólio dinâmico cadastrado no Sanity
+  const categories: PortfolioCategory[] = await client.fetch(PORTFOLIO_QUERY)
 
   return (
     <main className="min-h-screen bg-surface-page">
@@ -37,7 +37,7 @@ export default async function PortfolioPage() {
       </section>
 
       {/* Grid Interativo com Filtros e Lightbox */}
-      <PortfolioGrid produtos={produtos} />
+      <PortfolioGrid categories={categories} />
     </main>
   )
 }

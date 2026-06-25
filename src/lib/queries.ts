@@ -90,17 +90,25 @@ export const PRODUTOS_RELACIONADOS_QUERY = `
   }
 `
 
-// Query para buscar fotos de galeria de todos os produtos para a página de Portfólio
-export const PORTFOLIO_PRODUTOS_QUERY = `
-  *[_type == "produto" && defined(galeria)] | order(ordem asc) {
-    nome,
+// Query para buscar as categorias e fotos do Portfólio do Sanity
+export const PORTFOLIO_QUERY = `
+  *[_type == "portfolio"] | order(ordem asc) {
+    _id,
+    titulo,
     "slug": slug.current,
-    categoria,
-    galeria[] {
-      asset->{url, _id},
+    descricao,
+    imagens[] {
+      "id": _key,
       alt,
-      hotspot,
-      crop
+      imagem {
+        asset->{url, _id},
+        hotspot,
+        crop
+      },
+      produto-> {
+        nome,
+        "slug": slug.current
+      }
     }
   }
 `

@@ -82,7 +82,7 @@ export default function HeroSection() {
           Soluções em vidro
           <br />
           <span style={{ color: "rgba(255,255,255,0.7)" }}>
-            há mais de 60 anos
+            há mais de 65 anos
           </span>
         </motion.h1>
 
@@ -97,8 +97,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          Segurança, conforto e tecnologia para o seu projeto. Empresa
-          familiar referência no setor vidreiro do Rio Grande do Sul.
+          Segurança, conforto e tecnologia para o seu projeto. Referência no setor vidreiro do Rio Grande do Sul.
         </motion.p>
 
         {/* CTA Buttons */}

@@ -28,10 +28,10 @@ export function FiltroCategorias({ ativa, onChange }: FiltroCategoriasProps) {
             onClick={() => onChange(cat.id)}
             className={`flex items-center gap-2 px-5 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200 cursor-pointer ${isSelected ? 'bg-action-primary text-text-on-brand font-semibold' : 'bg-surface-card text-text-secondary hover:bg-surface-subtle border border-border-default'}`}
           >
-            <span className={`transition-colors duration-200 ${isSelected ? 'text-text-on-brand' : 'text-action-primary'}`}>
+            <span className={`inline-flex items-center transition-colors duration-200 ${isSelected ? 'text-text-on-brand' : 'text-action-primary'}`}>
               {cat.icon}
             </span>
-            <span>{cat.label}</span>
+            <span className="leading-none">{cat.label}</span>
           </button>
         )
       })}

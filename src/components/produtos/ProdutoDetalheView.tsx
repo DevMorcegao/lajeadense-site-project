@@ -349,7 +349,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                   }
                   fill
                   className="object-contain"
-                  quality={90}
+                  unoptimized
                 />
               </motion.div>
               <div className="absolute bottom-[-40px] left-0 right-0 text-center text-white/70 font-body text-sm">

@@ -6,21 +6,31 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight, Maximize2, ExternalLink, Filter } from 'lucide-react'
 
-export interface PortfolioProduct {
-  nome: string
+export interface PortfolioCategory {
+  _id: string
+  titulo: string
   slug: string
-  categoria: string
-  galeria?: Array<{
-    asset: {
-      url: string
-      _id: string
-    }
+  descricao?: string
+  imagens: Array<{
+    id: string
     alt: string
+    imagem: {
+      asset: {
+        url: string
+        _id: string
+      }
+      hotspot?: any
+      crop?: any
+    }
+    produto: {
+      nome: string
+      slug: string
+    }
   }>
 }
 
 interface PortfolioGridProps {
-  produtos: PortfolioProduct[]
+  categories: PortfolioCategory[]
 }
 
 interface PortfolioItem {
@@ -30,53 +40,75 @@ interface PortfolioItem {
   productName: string
   productSlug: string
   category: string
+  categoryTitle: string
 }
 
-const CATEGORIES = [
-  { id: 'todos', label: 'Ver Todos' },
-  { id: 'seguranca', label: 'Segurança' },
-  { id: 'conforto', label: 'Conforto' },
-  { id: 'estetica', label: 'Estética' },
-  { id: 'amplitude', label: 'Amplitude' },
-]
-
-export function PortfolioGrid({ produtos }: PortfolioGridProps) {
+export function PortfolioGrid({ categories }: PortfolioGridProps) {
   const [activeFilter, setActiveFilter] = useState('todos')
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(24)
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 640)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    const handleResize = () => {
+      const mobile = window.innerWidth < 640
+      setIsMobile(mobile)
+      setVisibleCount(mobile ? 12 : 24)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Achata e organiza todas as fotos das galerias em um array plano de itens
-  const allItems: PortfolioItem[] = produtos.flatMap((prod) => {
-    if (!prod.galeria) return []
-    return prod.galeria.map((img, index) => {
-      const isAltPlaceholder = !img.alt || img.alt.trim() === '' || img.alt.toLowerCase() === 'teste';
+  // Gera a lista dinâmica de categorias para os filtros com as contagens
+  const totalImagesCount = categories.reduce((sum, cat) => sum + (cat.imagens?.length || 0), 0)
+  const dynamicCategories = [
+    { id: 'todos', label: 'Ver Todos', count: totalImagesCount, description: '' },
+    ...categories.map((cat) => ({
+      id: cat.slug,
+      label: cat.titulo,
+      count: cat.imagens?.length || 0,
+      description: cat.descricao || '',
+    })),
+  ]
+
+  // Encontra a categoria ativa para pegar a descrição
+  const activeCategoryDetails = dynamicCategories.find((c) => c.id === activeFilter)
+
+  // Achata e organiza todas as fotos das categorias em um array plano de itens
+  const allItems: PortfolioItem[] = categories.flatMap((cat) => {
+    if (!cat.imagens) return []
+    return cat.imagens.map((img) => {
+      const isAltPlaceholder = !img.alt || img.alt.trim() === '' || img.alt.toLowerCase() === 'teste'
       return {
-        id: `${prod.slug}-${index}-${img.asset._id || index}`,
-        url: img.asset.url,
-        alt: isAltPlaceholder ? `Projeto executado com ${prod.nome}` : img.alt,
-        productName: prod.nome,
-        productSlug: prod.slug,
-        category: prod.categoria,
+        id: img.id,
+        url: img.imagem.asset.url,
+        alt: isAltPlaceholder ? `Projeto executado com ${img.produto.nome}` : img.alt,
+        productName: img.produto.nome,
+        productSlug: img.produto.slug,
+        category: cat.slug,
+        categoryTitle: cat.titulo,
       }
     })
   })
 
   // Filtra as fotos com base na categoria selecionada
-  const filteredItems = allItems.filter(
-    (item) => activeFilter === 'todos' || item.category === activeFilter
-  )
+  // Em "todos", removemos duplicatas (caso uma mesma foto esteja em mais de uma categoria) para a experiência infinita ficar mais limpa
+  const filteredItems = activeFilter === 'todos'
+    ? allItems.filter((item, index, self) =>
+        index === self.findIndex((t) => t.url === item.url)
+      )
+    : allItems.filter((item) => item.category === activeFilter)
 
-  // Distribui os itens filtrados em colunas para o scroll infinito alternado
+  // Controle de limite de carregamento inteligente (Carregar Mais)
+
+  // Fatiamento dos itens ativos para exibição
+  const itemsToRender = filteredItems.slice(0, visibleCount)
+
+  // Distribui os itens fatiados em colunas para o scroll infinito alternado ou grid estático
   const numCols = activeFilter === 'todos' ? 4 : 2
   const columns: PortfolioItem[][] = Array.from({ length: numCols }, () => [])
-  filteredItems.forEach((item, index) => {
+  itemsToRender.forEach((item, index) => {
     columns[index % numCols].push(item)
   })
 
@@ -84,14 +116,14 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
   const handlePrev = () => {
     if (selectedImageIndex === null) return
     setSelectedImageIndex((prev) =>
-      prev !== null ? (prev === 0 ? filteredItems.length - 1 : prev - 1) : null
+      prev !== null ? (prev === 0 ? itemsToRender.length - 1 : prev - 1) : null
     )
   }
 
   const handleNext = () => {
     if (selectedImageIndex === null) return
     setSelectedImageIndex((prev) =>
-      prev !== null ? (prev === filteredItems.length - 1 ? 0 : prev + 1) : null
+      prev !== null ? (prev === itemsToRender.length - 1 ? 0 : prev + 1) : null
     )
   }
 
@@ -106,12 +138,12 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         setSelectedImageIndex((prev) =>
-          prev !== null ? (prev === 0 ? filteredItems.length - 1 : prev - 1) : null
+          prev !== null ? (prev === 0 ? itemsToRender.length - 1 : prev - 1) : null
         )
       }
       if (e.key === 'ArrowRight') {
         setSelectedImageIndex((prev) =>
-          prev !== null ? (prev === filteredItems.length - 1 ? 0 : prev + 1) : null
+          prev !== null ? (prev === itemsToRender.length - 1 ? 0 : prev + 1) : null
         )
       }
       if (e.key === 'Escape') {
@@ -121,50 +153,79 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedImageIndex, filteredItems.length])
+  }, [selectedImageIndex, itemsToRender.length])
 
   const currentItem =
-    selectedImageIndex !== null ? filteredItems[selectedImageIndex] : null
+    selectedImageIndex !== null ? itemsToRender[selectedImageIndex] : null
 
   return (
     <section className="py-12 px-4 md:px-16 max-w-7xl mx-auto">
       {/* Abas de Filtros */}
-      <div className="flex flex-col items-center mb-12">
+      <div className="w-full flex flex-col items-center mb-12">
         <div className="flex items-center gap-2 mb-6 text-text-secondary/70">
           <Filter size={16} />
           <span className="text-sm font-semibold uppercase tracking-wider font-display">
             Filtrar por Categoria
           </span>
         </div>
-        <div className="flex flex-wrap justify-center gap-2 bg-surface-card p-1.5 rounded-full border border-border-default/40 shadow-sm max-w-2xl">
-          {CATEGORIES.map((cat) => {
-            const isActive = activeFilter === cat.id
-            return (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  setActiveFilter(cat.id)
-                  setSelectedImageIndex(null)
-                }}
-                className={`relative px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-display cursor-pointer ${
-                  isActive
-                    ? 'text-white'
-                    : 'text-text-secondary hover:text-text-primary'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-action-primary rounded-full"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{cat.label}</span>
-              </button>
-            )
-          })}
+        
+        {/* Container horizontal com scroll no mobile e centralizado no desktop */}
+        <div className="w-full max-w-6xl overflow-x-auto scrollbar-none pb-2 sm:pb-0">
+          <div className="flex sm:flex-wrap justify-start sm:justify-center gap-2 p-1.5 bg-surface-card rounded-full sm:rounded-full border border-border-default/40 shadow-sm min-w-max sm:min-w-0 mx-auto w-fit">
+            {dynamicCategories.map((cat) => {
+              const isActive = activeFilter === cat.id
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setActiveFilter(cat.id)
+                    setSelectedImageIndex(null)
+                    setVisibleCount(isMobile ? 12 : 24)
+                  }}
+                  className={`relative flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-display cursor-pointer ${
+                    isActive
+                      ? 'text-white'
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 bg-action-primary rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{cat.label}</span>
+                  
+                  {/* Badge numérico integrado e sempre visível */}
+                  <span className={`relative z-10 text-[14px] px-1.5 py-0.5 rounded-full font-bold transition-colors ${
+                    isActive 
+                      ? 'bg-white/20 text-white' 
+                      : 'bg-surface-page text-text-secondary group-hover:bg-border-default'
+                  }`}>
+                    {cat.count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
+
+      {/* Descrição Dinâmica da Categoria Ativa */}
+      {activeFilter !== 'todos' && activeCategoryDetails && (
+        <motion.div 
+          key={`desc-${activeFilter}`}
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center max-w-2xl mx-auto -mt-6 mb-12"
+        >
+          <p className="text-sm text-text-secondary font-body leading-relaxed">
+            {activeCategoryDetails.description || `Galeria completa de projetos e obras executados na categoria ${activeCategoryDetails.label} pela Lajeadense Vidros.`}
+          </p>
+        </motion.div>
+      )}
+
 
       {/* Grid do Mosaico (Masonry com Scroll Infinito ou Estático) */}
       <div className="w-full mb-8">
@@ -226,7 +287,7 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
                           <div
                             key={`${item.id}-dup-${itemIdx}`}
                             onClick={() => {
-                              const realIndex = filteredItems.findIndex((x) => x.id === item.id);
+                              const realIndex = itemsToRender.findIndex((x) => x.id === item.id);
                               if (realIndex !== -1) {
                                 setSelectedImageIndex(realIndex);
                               }
@@ -248,7 +309,7 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
                               {/* Tag Superior */}
                               <div className="self-end">
                                 <span className="text-[10px] bg-action-primary text-white font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] font-display">
-                                  {CATEGORIES.find((c) => c.id === item.category)?.label || item.category}
+                                  {item.categoryTitle}
                                 </span>
                               </div>
 
@@ -284,7 +345,7 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
               transition={{ duration: 0.4, ease: 'easeInOut' }}
               className="columns-1 sm:columns-4 gap-6 w-full h-auto"
             >
-              {filteredItems.map((item, index) => {
+              {itemsToRender.map((item, index) => {
                 const originalIndex = allItems.findIndex((x) => x.id === item.id);
                 // Diferentes proporções baseadas no index para o design Masonry
                 const aspectClass = originalIndex % 4 === 0 
@@ -315,7 +376,7 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
                       {/* Tag Superior */}
                       <div className="self-end">
                         <span className="text-[10px] bg-action-primary text-white font-bold uppercase tracking-wider px-2 py-0.5 rounded-[4px] font-display">
-                          {CATEGORIES.find((c) => c.id === item.category)?.label || item.category}
+                          {item.categoryTitle}
                         </span>
                       </div>
 
@@ -341,6 +402,33 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Botão de Carregar Mais */}
+      {filteredItems.length > visibleCount && (
+        <div className="flex justify-center mt-12 mb-8">
+          <button
+            onClick={() => setVisibleCount((prev) => prev + (isMobile ? 12 : 24))}
+            className="flex items-center justify-center gap-2 px-8 py-4 text-white font-bold text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer"
+            style={{
+              backgroundColor: '#C8102E',
+              borderRadius: '8px',
+              boxShadow: '0 4px 14px rgba(200,16,46,0.35)',
+              fontFamily: 'var(--font-body)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#A50D25'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#C8102E'
+            }}
+          >
+            <span>Carregar mais fotos</span>
+            <span className="bg-white/25 px-2 py-0.5 rounded-full text-[10px]">
+              +{filteredItems.length - visibleCount}
+            </span>
+          </button>
+        </div>
+      )}
 
       {/* Mensagem se não houver imagens */}
       {filteredItems.length === 0 && (
@@ -406,6 +494,7 @@ export function PortfolioGrid({ produtos }: PortfolioGridProps) {
                     fill
                     className="object-contain"
                     priority
+                    unoptimized
                     sizes="(max-w-1200px) 100vw, 1200px"
                   />
                 </motion.div>

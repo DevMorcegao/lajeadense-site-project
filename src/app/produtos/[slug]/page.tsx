@@ -22,9 +22,17 @@ const DEFAULT_SEO: Record<string, { title: string; description: string }> = {
     title: 'Vidro Duplo com Pinázio | Duo Glass | Lajeadense Vidros',
     description: 'Vidro duplo termoacústico Duo Glass com pinázio decorativo. Isolamento térmico, acústico e estética clássica para esquadrias de alto padrão.'
   },
+  'duoglass-pinazio-vidro-duplo-termoacustico-com-grid-decorativo': {
+    title: 'Vidro Duplo com Pinázio | Duoglass | Lajeadense Vidros',
+    description: 'Vidro duplo termoacústico Duoglass com pinázio decorativo. Isolamento térmico, acústico e estética clássica para esquadrias de alto padrão.'
+  },
   'duo-glass-vidro-duplo-termoacustico': {
     title: 'Vidro Duplo Termoacústico | Duo Glass | Lajeadense Vidros',
     description: 'Vidro duplo Duo Glass com isolamento térmico e acústico superior. Conforto e eficiência energética para residências e empresas no RS.'
+  },
+  'duoglass-vidro-duplo-termoacustico': {
+    title: 'Vidro Duplo Termoacústico | Duoglass | Lajeadense Vidros',
+    description: 'Vidro duplo Duoglass com isolamento térmico e acústico superior. Conforto e eficiência energética para residências e empresas no RS.'
   },
   'espelhos': {
     title: 'Espelhos de Alta Qualidade e Definição | Lajeadense Vidros',
@@ -54,6 +62,10 @@ const DEFAULT_SEO: Record<string, { title: string; description: string }> = {
     title: 'Fort Glass: Vidro Multilaminado de Segurança | Lajeadense',
     description: 'Vidro multilaminado Fort Glass para máxima segurança física e estrutural. Alta resistência a impactos para pisos, visores de piscina e blindagem.'
   },
+  'fortglass-vidro-multilaminado': {
+    title: 'Fortglass: Vidro Multilaminado de Segurança | Lajeadense',
+    description: 'Vidro multilaminado Fortglass para máxima segurança física e estrutural. Alta resistência a impactos para pisos, visores de piscina e blindagem.'
+  },
   'vidro-pintado': {
     title: 'Vidro Pintado para Revestimento e Design | Lajeadense',
     description: 'Vidros pintados com cores modernas e durabilidade. Perfeito para revestimento de paredes, divisórias, portas de armário e tampo de mesa.'
@@ -65,6 +77,10 @@ const DEFAULT_SEO: Record<string, { title: string; description: string }> = {
   'wall-glass-guarda-corpo': {
     title: 'Wall Glass: Guarda-corpo e Corrimão de Vidro | Lajeadense',
     description: 'Sistema de guarda-corpo Wall Glass com fixação oculta. Transparência elegante, design minimalista e total segurança certificada pela ABNT.'
+  },
+  'wallglass-guarda-corpo': {
+    title: 'Wallglass: Guarda-corpo e Corrimão de Vidro | Lajeadense',
+    description: 'Sistema de guarda-corpo Wallglass com fixação oculta. Transparência elegante, design minimalista e total segurança certificada pela ABNT.'
   }
 }
 
