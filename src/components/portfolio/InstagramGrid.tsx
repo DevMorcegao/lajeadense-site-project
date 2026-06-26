@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, Instagram, Calendar, ArrowUpRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, Instagram, Calendar, ArrowUpRight, Play, Camera } from 'lucide-react'
 import { InstagramPost } from './InstagramFeed'
 
 interface InstagramGridProps {
@@ -75,9 +75,18 @@ export function InstagramGrid({ posts }: InstagramGridProps) {
                 src={displayImage}
                 alt={post.caption ? post.caption.substring(0, 100) : 'Post no Instagram'}
                 fill
-                sizes="(max-w-640px) 100vw, (max-w-768px) 50vw, (max-w-1024px) 33vw, 25vw"
+                sizes="(max-width: 640px) 100vw, (max-w-768px) 50vw, (max-w-1024px) 33vw, 25vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
+
+              {/* Badge Indicativo de Tipo de Mídia (sempre visível, fade no hover) */}
+              <div className="absolute top-3 right-3 z-10 w-7.5 h-7.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/90 shadow-sm transition-opacity duration-300 group-hover:opacity-0 pointer-events-none">
+                {post.mediaType === 'VIDEO' ? (
+                  <Play size={11} fill="currentColor" className="ml-0.5" />
+                ) : (
+                  <Camera size={12} />
+                )}
+              </div>
 
               {/* Hover Glassmorphic Otimizado */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-md flex flex-col justify-between p-6 z-10">

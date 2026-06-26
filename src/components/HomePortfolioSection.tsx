@@ -119,7 +119,7 @@ export default function HomePortfolioSection() {
           bottom: 0;
           left: 0;
           right: 0;
-          background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.65) 45%, rgba(0, 0, 0, 0.15) 80%, transparent 100%);
           padding: 40px 24px 30px 24px;
           transform: translateY(10px);
           opacity: 0;
@@ -279,6 +279,7 @@ export default function HomePortfolioSection() {
                     <div className="gallery-overlay">
                       <span
                         className="text-[10px] font-bold text-[#C8102E] uppercase tracking-wider font-body self-start"
+                        style={{ textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)" }}
                       >
                         {item.title}
                       </span>
@@ -286,6 +287,7 @@ export default function HomePortfolioSection() {
                         className="text-white text-xl md:text-2xl font-bold uppercase tracking-tight"
                         style={{
                           fontFamily: "var(--font-display)",
+                          textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
                         }}
                       >
                         {item.subtitle}
@@ -294,6 +296,7 @@ export default function HomePortfolioSection() {
                         className="text-xs md:text-sm text-white/70 leading-relaxed font-body"
                         style={{
                           fontFamily: "var(--font-body)",
+                          textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)",
                         }}
                       >
                         {item.description}

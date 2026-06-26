@@ -50,10 +50,19 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
   const [visibleCount, setVisibleCount] = useState(24)
 
   useEffect(() => {
+    let prevWidth = typeof window !== 'undefined' ? window.innerWidth : 0
     const handleResize = () => {
-      const mobile = window.innerWidth < 640
+      const width = window.innerWidth
+      const mobile = width < 640
+      const prevMobile = prevWidth < 640
+
       setIsMobile(mobile)
-      setVisibleCount(mobile ? 12 : 24)
+
+      // Apenas reseta a contagem visível se houver transição real de tela cruzando o limite
+      if (mobile !== prevMobile) {
+        setVisibleCount(mobile ? 12 : 24)
+      }
+      prevWidth = width
     }
     handleResize()
     window.addEventListener('resize', handleResize)
@@ -129,6 +138,31 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
 
   const handleClose = () => {
     setSelectedImageIndex(null)
+  }
+
+  // Estados para suportar gestos de arrastar (swipe) no mobile no Lightbox
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
+  const [touchEndX, setTouchEndX] = useState<number | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null)
+    setTouchStartX(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return
+    const diffX = touchStartX - touchEndX
+    const minSwipeDistance = 50
+
+    if (diffX > minSwipeDistance) {
+      handleNext()
+    } else if (diffX < -minSwipeDistance) {
+      handlePrev()
+    }
   }
 
   // Evento de teclado para navegação no Lightbox
@@ -448,6 +482,9 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col justify-between"
             onClick={handleClose}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {/* Header do Lightbox */}
             <div className="w-full flex justify-between items-center px-6 py-4 relative z-10">

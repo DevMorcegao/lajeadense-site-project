@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -73,19 +73,66 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
     setLightboxOpen(true)
   }
 
-  const nextLightboxImage = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const nextLightboxImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
     if (produto.galeria) {
       setLightboxIndex((prev) => (prev + 1) % produto.galeria.length)
     }
   }
 
-  const prevLightboxImage = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const prevLightboxImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
     if (produto.galeria) {
       setLightboxIndex((prev) => (prev - 1 + produto.galeria.length) % produto.galeria.length)
     }
   }
+
+  // Estados para suportar gestos de arrastar (swipe) no mobile
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
+  const [touchEndX, setTouchEndX] = useState<number | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null)
+    setTouchStartX(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return
+    const diffX = touchStartX - touchEndX
+    const minSwipeDistance = 50
+
+    if (diffX > minSwipeDistance) {
+      // Swipe para a esquerda (próxima imagem)
+      nextLightboxImage()
+    } else if (diffX < -minSwipeDistance) {
+      // Swipe para a direita (imagem anterior)
+      prevLightboxImage()
+    }
+  }
+
+  // Evento de teclado para navegação no Lightbox do produto
+  useEffect(() => {
+    if (!lightboxOpen || !produto.galeria) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        prevLightboxImage()
+      }
+      if (e.key === 'ArrowRight') {
+        nextLightboxImage()
+      }
+      if (e.key === 'Escape') {
+        setLightboxOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [lightboxOpen, produto.galeria])
 
   return (
     <article className="min-h-screen bg-surface-page pt-[72px] md:pt-[104px]">
@@ -299,62 +346,80 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col justify-between"
             onClick={() => setLightboxOpen(false)}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            {/* Botão Fechar */}
-            <button
-              onClick={() => setLightboxOpen(false)}
-              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-50 p-2 cursor-pointer"
-            >
-              <X size={32} strokeWidth={1.5} />
-            </button>
+            {/* Header do Lightbox */}
+            <div className="w-full flex justify-between items-center px-6 py-4 relative z-10">
+              <span className="text-xs uppercase tracking-widest font-semibold text-white/50 font-display">
+                {produto.nome} — Galeria {lightboxIndex + 1} / {produto.galeria.length}
+              </span>
+              <button
+                onClick={() => setLightboxOpen(false)}
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white border border-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
 
-            {/* Controles de navegação */}
-            {produto.galeria.length > 1 && (
-              <>
+            {/* Container Principal */}
+            <div className="flex-1 flex items-center justify-between px-4 md:px-12 relative">
+              {/* Botão Anterior */}
+              {produto.galeria.length > 1 && (
                 <button
                   onClick={prevLightboxImage}
-                  className="absolute left-4 md:left-8 text-white/50 hover:text-white transition-colors p-4 z-50 cursor-pointer"
-                  aria-label="Anterior"
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute left-4 md:left-12 z-20"
                 >
-                  <ChevronLeft size={48} strokeWidth={1} />
+                  <ChevronLeft size={24} />
                 </button>
+              )}
 
+              {/* Imagem Central */}
+              <div
+                className="w-full h-full max-w-4xl max-h-[72vh] relative flex items-center justify-center mx-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <motion.div
+                  key={lightboxIndex}
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className="w-full h-full relative"
+                >
+                  <Image
+                    src={urlFor(produto.galeria[lightboxIndex]).width(1600).url()}
+                    alt={
+                      !produto.galeria[lightboxIndex].alt || produto.galeria[lightboxIndex].alt.toLowerCase() === 'teste'
+                        ? `${produto.nome} - Detalhe da foto ${lightboxIndex + 1} - Lajeadense Vidros`
+                        : produto.galeria[lightboxIndex].alt
+                    }
+                    fill
+                    className="object-contain"
+                    priority
+                    unoptimized
+                    sizes="(max-w-1200px) 100vw, 1200px"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Botão Próximo */}
+              {produto.galeria.length > 1 && (
                 <button
                   onClick={nextLightboxImage}
-                  className="absolute right-4 md:right-8 text-white/50 hover:text-white transition-colors p-4 z-50 cursor-pointer"
-                  aria-label="Próxima"
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute right-4 md:right-12 z-20"
                 >
-                  <ChevronRight size={48} strokeWidth={1} />
+                  <ChevronRight size={24} />
                 </button>
-              </>
-            )}
+              )}
+            </div>
 
-            {/* Imagem Atual */}
-            <div className="relative w-full max-w-5xl h-[80vh] px-4 md:px-12" onClick={(e) => e.stopPropagation()}>
-              <motion.div
-                key={lightboxIndex}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="relative w-full h-full flex items-center justify-center"
-              >
-                <Image
-                  src={urlFor(produto.galeria[lightboxIndex]).width(1600).url()}
-                  alt={
-                    !produto.galeria[lightboxIndex].alt || produto.galeria[lightboxIndex].alt.toLowerCase() === 'teste'
-                      ? `${produto.nome} - Detalhe da foto ${lightboxIndex + 1} - Lajeadense Vidros`
-                      : produto.galeria[lightboxIndex].alt
-                  }
-                  fill
-                  className="object-contain"
-                  unoptimized
-                />
-              </motion.div>
-              <div className="absolute bottom-[-40px] left-0 right-0 text-center text-white/70 font-body text-sm">
-                {lightboxIndex + 1} / {produto.galeria.length}
-              </div>
+            {/* Rodapé sutil para centralização e marca */}
+            <div className="w-full py-6 text-center text-[10px] text-white/20 relative z-10 select-none">
+              Lajeadense Vidros — {produto.nome}
             </div>
           </motion.div>
         )}
