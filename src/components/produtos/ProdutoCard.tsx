@@ -54,9 +54,9 @@ export function ProdutoCard({ produto }: { produto: ProdutoCardType }) {
 
         {/* Conteúdo */}
         <div className="p-6 flex flex-col flex-grow">
-          <h3 className="font-display text-2xl font-bold text-text-primary uppercase tracking-tight group-hover/card:text-action-primary transition-colors duration-300">
+          <h2 className="font-display text-2xl font-bold text-text-primary uppercase tracking-tight group-hover/card:text-action-primary transition-colors duration-300">
             {produto.nome}
-          </h3>
+          </h2>
           <p className="mt-2 text-sm text-text-secondary line-clamp-2 font-body">
             {produto.tagline}
           </p>

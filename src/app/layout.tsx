@@ -19,7 +19,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Lajeadense Vidros — Soluções em Vidro há mais de 60 anos",
+  title: "Lajeadense Vidros - Soluções em Vidro há mais de 65 anos",
   description:
     "Desenvolvemos soluções em vidro priorizando segurança, conforto e tecnologia. Empresa familiar fundada em 1958, referência no setor vidreiro no Rio Grande do Sul.",
 };

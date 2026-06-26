@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:perf": "node scripts/audit-performance.mjs"
   },
   "dependencies": {
     "@portabletext/react": "^6.0.3",
@@ -29,6 +30,7 @@
     "three": "^0.183.2"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.9",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -36,6 +38,8 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "lighthouse": "^13.4.0",
+    "source-map-explorer": "^2.5.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

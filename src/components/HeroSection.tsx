@@ -97,7 +97,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          Segurança, conforto e tecnologia para o seu projeto. Referência no setor vidreiro do Rio Grande do Sul.
+          Segurança, conforto e tecnologia para o seu projeto.
         </motion.p>
 
         {/* CTA Buttons */}

@@ -353,9 +353,9 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
                                   <p className="text-[10px] text-white/60 uppercase tracking-widest font-semibold font-display">
                                     Produto
                                   </p>
-                                  <h3 className="text-sm font-bold uppercase font-display leading-tight tracking-wide truncate">
+                                  <h2 className="text-sm font-bold uppercase font-display leading-tight tracking-wide truncate">
                                     {item.productName}
-                                  </h3>
+                                  </h2>
                                 </div>
                                 <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors duration-200">
                                   <Maximize2 size={14} />
@@ -420,9 +420,9 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
                           <p className="text-[10px] text-white/60 uppercase tracking-widest font-semibold font-display">
                             Produto
                           </p>
-                          <h3 className="text-sm font-bold uppercase font-display leading-tight tracking-wide truncate">
+                          <h2 className="text-sm font-bold uppercase font-display leading-tight tracking-wide truncate">
                             {item.productName}
-                          </h3>
+                          </h2>
                         </div>
                         <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors duration-200">
                           <Maximize2 size={14} />
@@ -494,6 +494,7 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
               <button
                 onClick={handleClose}
                 className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white border border-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer"
+                aria-label="Fechar galeria"
               >
                 <X size={18} />
               </button>
@@ -508,6 +509,7 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
                   handlePrev()
                 }}
                 className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute left-4 md:left-12 z-20"
+                aria-label="Imagem anterior"
               >
                 <ChevronLeft size={24} />
               </button>
@@ -532,7 +534,7 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
                     className="object-contain"
                     priority
                     unoptimized
-                    sizes="(max-w-1200px) 100vw, 1200px"
+                    sizes="(max-width: 1200px) 100vw, 1200px"
                   />
                 </motion.div>
               </div>
@@ -544,6 +546,7 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
                   handleNext()
                 }}
                 className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute right-4 md:right-12 z-20"
+                aria-label="Próxima imagem"
               >
                 <ChevronRight size={24} />
               </button>

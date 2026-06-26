@@ -476,11 +476,28 @@ export function Viewer3D({
           dpr={[1, 1.5]}
         >
           <Suspense fallback={null}>
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
-            <directionalLight position={[-3, 3, -3]} intensity={0.3} />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[5, 5, 5]} intensity={1.2} castShadow />
+            <directionalLight position={[-3, 3, -3]} intensity={0.4} />
 
-            <Environment preset="studio" />
+            <Environment resolution={256}>
+              <ambientLight intensity={0.6} />
+              <directionalLight position={[5, 5, 5]} intensity={1.5} />
+              <directionalLight position={[-5, 5, -5]} intensity={1.0} />
+              {/* Painéis de iluminação de estúdio (softboxes virtuais) para reflexos de alta qualidade no vidro */}
+              <mesh position={[0, 4, 2]} rotation={[Math.PI / 4, 0, 0]}>
+                <planeGeometry args={[8, 3]} />
+                <meshBasicMaterial color="#ffffff" toneMapped={false} />
+              </mesh>
+              <mesh position={[3, 2, -3]} rotation={[0, -Math.PI / 4, 0]}>
+                <planeGeometry args={[4, 8]} />
+                <meshBasicMaterial color="#ffffff" toneMapped={false} />
+              </mesh>
+              <mesh position={[-3, 2, -3]} rotation={[0, Math.PI / 4, 0]}>
+                <planeGeometry args={[4, 8]} />
+                <meshBasicMaterial color="#ffffff" toneMapped={false} />
+              </mesh>
+            </Environment>
 
             {modelUrl && (
               <Modelo

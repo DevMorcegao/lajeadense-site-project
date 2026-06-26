@@ -67,6 +67,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [is3DActive, setIs3DActive] = useState(false)
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index)
@@ -187,20 +188,20 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
 
           {/* Diagrama Técnico SVG (obrigatório) */}
           <div className="bg-surface-subtle rounded-lg p-6 md:p-8 border border-border-subtle w-full max-w-full overflow-hidden">
-            <h3 className="font-display font-bold text-xl uppercase mb-6 flex items-center gap-3 break-words">
+            <h2 className="font-display font-bold text-xl uppercase mb-6 flex items-center gap-3 break-words">
               <Layout size={18} strokeWidth={1.5} className="text-action-primary shrink-0" />
               Detalhamento de Composição
-            </h3>
+            </h2>
             <Diagrama />
           </div>
 
           {/* Especificações Técnicas */}
           {produto.especificacoes && produto.especificacoes.length > 0 && (
             <div className="bg-surface-subtle rounded-lg p-6 md:p-8 border border-border-subtle">
-              <h3 className="font-display font-bold text-xl uppercase mb-6 flex items-center gap-3 break-words">
+              <h2 className="font-display font-bold text-xl uppercase mb-6 flex items-center gap-3 break-words">
                 <FileText size={18} strokeWidth={1.5} className="text-action-primary shrink-0" />
                 Especificações Técnicas
-              </h3>
+              </h2>
               <dl className="grid grid-cols-1 gap-6 w-full">
                 {produto.especificacoes.map((spec, i) => (
                   <div key={i} className="border-b border-border-subtle pb-3 min-w-0">
@@ -221,9 +222,9 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-[2px] w-6 bg-action-primary shrink-0"></span>
-                <h3 className="font-display font-bold text-lg uppercase tracking-wide break-words">
+                <h2 className="font-display font-bold text-lg uppercase tracking-wide break-words">
                   Aplicações Recomendadas
-                </h3>
+                </h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 {produto.aplicacoes.map((app, i) => (
@@ -243,9 +244,9 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-[2px] w-6 bg-action-primary shrink-0"></span>
-                <h3 className="font-display font-bold text-lg uppercase tracking-wide break-words">
+                <h2 className="font-display font-bold text-lg uppercase tracking-wide break-words">
                   Certificações e Normas
-                </h3>
+                </h2>
               </div>
               <div className="space-y-3">
                 {produto.normasABNT.map((norma, i) => (
@@ -293,7 +294,45 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
           {/* Visualizador 3D */}
           {produto.modelo3dUrl ? (
             <div className="rounded-sm overflow-hidden">
-              <Viewer3D modelUrl={produto.modelo3dUrl} isConfigurable={produto.slug === 'vidro-pintado'} isPolarizable={produto.slug === 'vidro-polarizado-vidro-inteligente'} isExtraClear={produto.slug === 'vidro-extra-clear'} />
+              {is3DActive ? (
+                <Viewer3D modelUrl={produto.modelo3dUrl} isConfigurable={produto.slug === 'vidro-pintado'} isPolarizable={produto.slug === 'vidro-polarizado-vidro-inteligente'} isExtraClear={produto.slug === 'vidro-extra-clear'} />
+              ) : (
+                <div className="relative aspect-[16/10] bg-surface-section overflow-hidden rounded-sm group">
+                  <Image
+                    src={urlFor(produto.imagemCapa).width(1200).height(750).url()}
+                    alt={
+                      !produto.imagemCapa?.alt || produto.imagemCapa.alt.toLowerCase() === 'teste'
+                        ? `${produto.nome} - Lajeadense Vidros`
+                        : produto.imagemCapa.alt
+                    }
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] flex flex-col items-center justify-center p-4 transition-all duration-300 group-hover:bg-black/40">
+                    <button
+                      onClick={() => setIs3DActive(true)}
+                      className="px-6 py-3.5 bg-[#C8102E] text-white font-display text-sm font-bold uppercase tracking-wider rounded-md shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
+                      style={{
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#A50D25";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "#C8102E";
+                      }}
+                    >
+                      <Layout className="w-5 h-5 animate-pulse" />
+                      <span>Visualizar em 3D</span>
+                    </button>
+                    <span className="text-[10px] text-white/80 font-body mt-2.5 bg-black/40 px-3 py-1 rounded-full uppercase tracking-wider font-semibold select-none">
+                      Carrega ~1.5 MB de dados
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="relative aspect-[16/10] bg-surface-section overflow-hidden rounded-sm">
@@ -306,6 +345,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                 }
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 priority
               />
             </div>
@@ -329,6 +369,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                     }
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 33vw, 15vw"
                   />
                   {/* Overlay sutil para indicar expansão */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 pointer-events-none" />
@@ -360,6 +401,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
               <button
                 onClick={() => setLightboxOpen(false)}
                 className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white border border-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer"
+                aria-label="Fechar galeria"
               >
                 <X size={18} />
               </button>
@@ -372,6 +414,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                 <button
                   onClick={prevLightboxImage}
                   className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute left-4 md:left-12 z-20"
+                  aria-label="Imagem anterior"
                 >
                   <ChevronLeft size={24} />
                 </button>
@@ -401,7 +444,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                     className="object-contain"
                     priority
                     unoptimized
-                    sizes="(max-w-1200px) 100vw, 1200px"
+                    sizes="(max-width: 1200px) 100vw, 1200px"
                   />
                 </motion.div>
               </div>
@@ -411,6 +454,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                 <button
                   onClick={nextLightboxImage}
                   className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute right-4 md:right-12 z-20"
+                  aria-label="Próxima imagem"
                 >
                   <ChevronRight size={24} />
                 </button>

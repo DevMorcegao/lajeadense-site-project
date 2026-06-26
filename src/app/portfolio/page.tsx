@@ -31,7 +31,7 @@ export default async function PortfolioPage() {
             Nosso Portfólio de Obras
           </h1>
           <p className="text-lg text-text-on-dark/70 max-w-2xl font-body">
-            Explore a aplicação prática e técnica de nossas soluções vidreiras em projetos residenciais, comerciais e corporativos de alto padrão.
+            Explore a aplicação prática e técnica de nossas soluções vidreiras em projetos residenciais, comerciais e corporativos.
           </p>
         </div>
       </section>
