@@ -5,8 +5,8 @@ import { Wrapper, GlassRect, Nota, P, PS, SP, TM, R } from './shared'
 
 export function DiagramaWallGlass() {
   return (
-    <Wrapper title="WALL GLASS" sub="Fixação Base Shoe">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Fixação base shoe do guarda-corpo Wall Glass">
+    <Wrapper title="WALLGLASS" sub="Fixação Base Shoe">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Fixação base shoe do guarda-corpo Wallglass">
         {/* Base shoe (perfil de fixação inferior) */}
         <rect x={52} y={92} width={34} height={18} fill={SP} opacity="0.85" rx="1" />
         <rect x={52} y={92} width={34} height={18} fill="none" stroke={TM} strokeWidth="0.5" />

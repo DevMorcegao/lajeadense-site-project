@@ -5,8 +5,8 @@ import { Wrapper, GlassRect, Cota, Nota, SP, CH, CS, TM } from './shared'
 
 export function DiagramaDuoGlass() {
   return (
-    <Wrapper title="DUO GLASS" sub="Corte Transversal">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Corte transversal do vidro duplo Duo Glass">
+    <Wrapper title="DUOGLASS" sub="Corte Transversal">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Corte transversal do vidro duplo Duoglass">
         {/* Vidro externo */}
         <GlassRect x={18} y={18} w={13} h={84} />
         {/* Espaçador esquerdo */}

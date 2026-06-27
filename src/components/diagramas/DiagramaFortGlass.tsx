@@ -18,8 +18,8 @@ export function DiagramaFortGlass() {
   ]
 
   return (
-    <Wrapper title="FORT GLASS" sub="Stack Multilaminado">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Stack de camadas do vidro multilaminado Fort Glass">
+    <Wrapper title="FORTGLASS" sub="Stack Multilaminado">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Stack de camadas do vidro multilaminado Fortglass">
         {/* Camadas */}
         {layers.map((l, i) =>
           l.type === 'glass' ? (

@@ -11,7 +11,7 @@ export const produtoSchema = defineType({
       name: 'nome',
       title: 'Nome do Produto',
       type: 'string',
-      description: 'Ex: Duo Glass — Vidro Duplo Termoacústico',
+      description: 'Ex: Duoglass — Vidro Duplo Termoacústico',
       validation: (Rule: any) => Rule.required().max(80),
     }),
     defineField({
@@ -153,7 +153,7 @@ export const produtoSchema = defineType({
           name: 'alt',
           title: 'Texto alternativo (SEO)',
           type: 'string',
-          description: 'Descreva a imagem com o nome do produto. Ex: Vidro duplo Duo Glass instalado em fachada residencial',
+          description: 'Descreva a imagem com o nome do produto. Ex: Vidro duplo Duoglass instalado em fachada residencial',
           validation: (Rule: any) => Rule.required(),
         },
       ],
@@ -203,7 +203,7 @@ export const produtoSchema = defineType({
           name: 'metaTitle',
           title: 'Meta Title',
           type: 'string',
-          description: 'Máx. 60 caracteres. Ex: Vidro Duplo Termoacústico | Duo Glass | Lajeadense',
+          description: 'Máx. 60 caracteres. Ex: Vidro Duplo Termoacústico | Duoglass | Lajeadense',
           validation: (Rule: any) => Rule.max(60),
         },
         {

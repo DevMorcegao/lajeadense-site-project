@@ -5,8 +5,8 @@ import { Wrapper, GlassRect, Nota, TM, CS, G, GS, P, PS, CH, R } from './shared'
 
 export function DiagramaDuploPinazio() {
   return (
-    <Wrapper title="DUO GLASS + PINÁZIO" sub="Corte Transversal · Vista Frontal">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Diagrama Duo Glass com pinázio decorativo">
+    <Wrapper title="DUOGLASS + PINÁZIO" sub="Corte Transversal · Vista Frontal">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Diagrama Duoglass com pinázio decorativo">
 
         {/* ═══════════════════════════════════════
             CORTE TRANSVERSAL — canto esquerdo
@@ -79,7 +79,7 @@ export function DiagramaDuploPinazio() {
         {/* ═══════════════════════════════════════
             ANOTAÇÕES
         ════════════════════════════════════════ */}
-        <Nota x={120} y={36}  titulo="DUO GLASS BASE"      desc="Câmara termoacústica com Low-E" />
+        <Nota x={120} y={36}  titulo="DUOGLASS BASE"      desc="Câmara termoacústica com Low-E" />
         <Nota x={120} y={64}  titulo="PINÁZIO DECORATIVO"  desc="Grade interna à câmara de ar" />
         <Nota x={120} y={92}  titulo="PADRÃO COLONIAL"     desc="Layout personalizado disponível" />
       </svg>

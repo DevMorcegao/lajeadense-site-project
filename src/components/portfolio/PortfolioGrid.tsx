@@ -140,6 +140,29 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
     setSelectedImageIndex(null)
   }
 
+  // Determina se o Lightbox está no limite de fotos carregadas
+  const hasMorePhotos = filteredItems.length > visibleCount
+  const isAtLastVisible = selectedImageIndex !== null && selectedImageIndex === itemsToRender.length - 1
+  const isAtFirstVisible = selectedImageIndex !== null && selectedImageIndex === 0
+
+  // Ao avançar do último item visível: carrega mais 24 (desktop) / 12 (mobile) e vai para a próxima foto
+  const handleLoadMoreAndNext = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const batch = isMobile ? 12 : 24
+    const nextIndex = itemsToRender.length // índice da nova foto (a 25ª, por ex.)
+    setVisibleCount((prev) => prev + batch)
+    // Aguarda o estado atualizar para navegar
+    setSelectedImageIndex(nextIndex)
+  }
+
+  // Ao voltar da primeira foto quando há fotos antes dela (não carregadas): carrega TODAS e vai para a última
+  const handleLoadAllAndGoToLast = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setVisibleCount(filteredItems.length)
+    // Vai para o último índice do total de fotos
+    setSelectedImageIndex(filteredItems.length - 1)
+  }
+
   // Estados para suportar gestos de arrastar (swipe) no mobile no Lightbox
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [touchEndX, setTouchEndX] = useState<number | null>(null)
@@ -171,11 +194,15 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
+        // Se está na primeira foto e há mais fotos não carregadas, não faz loop
+        if (selectedImageIndex === 0 && hasMorePhotos) return
         setSelectedImageIndex((prev) =>
           prev !== null ? (prev === 0 ? itemsToRender.length - 1 : prev - 1) : null
         )
       }
       if (e.key === 'ArrowRight') {
+        // Se está na última foto visível e há mais fotos, não faz loop
+        if (selectedImageIndex === itemsToRender.length - 1 && hasMorePhotos) return
         setSelectedImageIndex((prev) =>
           prev !== null ? (prev === itemsToRender.length - 1 ? 0 : prev + 1) : null
         )
@@ -187,7 +214,7 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedImageIndex, itemsToRender.length])
+  }, [selectedImageIndex, itemsToRender.length, hasMorePhotos])
 
   const currentItem =
     selectedImageIndex !== null ? itemsToRender[selectedImageIndex] : null
@@ -502,17 +529,41 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
 
             {/* Container Principal */}
             <div className="flex-1 flex items-center justify-between px-4 md:px-12 relative">
-              {/* Botão Anterior */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handlePrev()
-                }}
-                className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute left-4 md:left-12 z-20"
-                aria-label="Imagem anterior"
-              >
-                <ChevronLeft size={24} />
-              </button>
+
+              {/* Botão Anterior / Banner Carregar Tudo + Ir para Última */}
+              {hasMorePhotos && isAtFirstVisible ? (
+                <motion.button
+                  key="load-all-prev"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={handleLoadAllAndGoToLast}
+                  className="flex flex-col items-center justify-center gap-1.5 w-14 md:w-20 min-h-[56px] bg-black/60 hover:bg-[#C8102E]/80 border border-white/10 hover:border-[#C8102E] rounded-xl text-white transition-all duration-300 cursor-pointer absolute left-2 md:left-8 z-20 px-2 py-3 text-center"
+                  aria-label="Carregar todas as fotos e ir para a última"
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(200,16,46,0.8)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.6)' }}
+                >
+                  <ChevronLeft size={18} />
+                  <span className="text-[12px] font-bold uppercase tracking-wide leading-tight font-display">
+                    Ver todas
+                  </span>
+                  <span className="text-[10px] text-white/60 font-body">
+                    +{filteredItems.length - visibleCount}
+                  </span>
+                </motion.button>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handlePrev()
+                  }}
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute left-4 md:left-12 z-20"
+                  aria-label="Imagem anterior"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+              )}
 
               {/* Imagem Central */}
               <div
@@ -539,17 +590,40 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
                 </motion.div>
               </div>
 
-              {/* Botão Próximo */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleNext()
-                }}
-                className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute right-4 md:right-12 z-20"
-                aria-label="Próxima imagem"
-              >
-                <ChevronRight size={24} />
-              </button>
+              {/* Botão Próximo / Banner Carregar Mais */}
+              {hasMorePhotos && isAtLastVisible ? (
+                <motion.button
+                  key="load-more-next"
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={handleLoadMoreAndNext}
+                  className="flex flex-col items-center justify-center gap-1.5 w-14 md:w-20 min-h-[56px] bg-black/60 hover:bg-[#C8102E]/80 border border-white/10 hover:border-[#C8102E] rounded-xl text-white transition-all duration-300 cursor-pointer absolute right-2 md:right-8 z-20 px-2 py-3 text-center"
+                  aria-label="Carregar mais fotos e continuar"
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(200,16,46,0.8)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.6)' }}
+                >
+                  <ChevronRight size={18} />
+                  <span className="text-[12px] font-bold uppercase tracking-wide leading-tight font-display">
+                    Ver mais
+                  </span>
+                  <span className="text-[10px] text-white/60 font-body">
+                    +{filteredItems.length - visibleCount}
+                  </span>
+                </motion.button>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleNext()
+                  }}
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-black/40 hover:bg-white/10 flex items-center justify-center text-white border border-white/5 hover:border-white/20 transition-all duration-200 cursor-pointer absolute right-4 md:right-12 z-20"
+                  aria-label="Próxima imagem"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              )}
             </div>
 
             {/* Painel Inferior */}

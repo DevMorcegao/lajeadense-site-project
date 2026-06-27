@@ -10,7 +10,7 @@ const categories = [
   {
     id: 1,
     title: "Conforto",
-    description: "Isolamento acústico e térmico de alta performance. Destaque para a tecnologia Duo Glass (vidros duplos), além de outras soluções termoacústicas sob medida para o bem-estar do seu ambiente.",
+    description: "Isolamento acústico e térmico de alta performance. Destaque para a tecnologia Duoglass (vidros duplos), além de outras soluções termoacústicas sob medida para o bem-estar do seu ambiente.",
     tag: "Conforto",
     image: "/images/sobre/lajeadense-vidros-sobre-img1.webp",
     link: "/produtos?categoria=conforto",
@@ -19,7 +19,7 @@ const categories = [
   {
     id: 2,
     title: "Segurança",
-    description: "Vidros de alta resistência para proteção ativa. Portfólio completo de temperados, laminados de segurança e multilaminados Fort Glass para guarda-corpos e divisórias.",
+    description: "Vidros de alta resistência para proteção ativa. Portfólio completo de temperados, laminados de segurança e multilaminados Fortglass para guarda-corpos e divisórias.",
     tag: "Segurança",
     image: "/images/sobre/lajeadense-vidros-sobre-img2.webp",
     link: "/produtos?categoria=seguranca",

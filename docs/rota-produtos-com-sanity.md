@@ -201,7 +201,7 @@ export const produtoSchema = {
       name: 'nome',
       title: 'Nome do Produto',
       type: 'string',
-      description: 'Ex: Duo Glass — Vidro Duplo Termoacústico',
+      description: 'Ex: Duoglass — Vidro Duplo Termoacústico',
       validation: (Rule: any) => Rule.required().max(80),
     },
     {
@@ -350,7 +350,7 @@ export const produtoSchema = {
           name: 'alt',
           title: 'Texto alternativo (SEO)',
           type: 'string',
-          description: 'Descreva a imagem com o nome do produto. Ex: Vidro duplo Duo Glass instalado em fachada residencial',
+          description: 'Descreva a imagem com o nome do produto. Ex: Vidro duplo Duoglass instalado em fachada residencial',
           validation: (Rule: any) => Rule.required(),
         },
       ],
@@ -400,7 +400,7 @@ export const produtoSchema = {
           name: 'metaTitle',
           title: 'Meta Title',
           type: 'string',
-          description: 'Máx. 60 caracteres. Ex: Vidro Duplo Termoacústico | Duo Glass | Lajeadense',
+          description: 'Máx. 60 caracteres. Ex: Vidro Duplo Termoacústico | Duoglass | Lajeadense',
           validation: (Rule: any) => Rule.max(60),
         },
         {
@@ -1153,7 +1153,7 @@ export default async function PaginaProduto({ params }: { params: { slug: string
 │  HEADER FIXO                                                        │
 ├─────────────────────────────────────────────────────────────────────┤
 │  BREADCRUMB · surface-page · px-16 · py-4                          │
-│  Início / Produtos / Duo Glass · text-xs · text-muted              │
+│  Início / Produtos / Duoglass · text-xs · text-muted              │
 ├──────────────────────────┬──────────────────────────────────────────┤
 │   COLUNA ESQUERDA 40%    │   COLUNA DIREITA 60%                     │
 │   pl-16 pr-12 py-16      │   (sticky · sem padding lateral)         │
@@ -1280,7 +1280,7 @@ O design system é explícito: cards sem diagrama técnico estão incompletos. C
 
 export function DiagramaDuoGlass() {
   return (
-    <svg viewBox="0 0 280 120" className="w-full h-auto" aria-label="Diagrama de corte do Duo Glass">
+    <svg viewBox="0 0 280 120" className="w-full h-auto" aria-label="Diagrama de corte do Duoglass">
       {/* Vidro externo */}
       <rect x="10" y="20" width="20" height="80" fill="#C8D8E8" opacity="0.8" />
       <text x="6" y="115" fontSize="8" fill="#9B9B9B" fontFamily="DM Sans">Vidro</text>
@@ -1596,7 +1596,7 @@ export function BreadcrumbJsonLd({ produto }: { produto: ProdutoDetalhe }) {
   H3: nome de cada produto nos cards
 
 /produtos/[slug]
-  H1: nome do produto (ex: "Duo Glass — Vidro Duplo Termoacústico")
+  H1: nome do produto (ex: "Duoglass — Vidro Duplo Termoacústico")
   H2: "Especificações Técnicas"
   H2: "Normas e Certificações"
   H2: "Aplicações Típicas"
@@ -1605,7 +1605,7 @@ export function BreadcrumbJsonLd({ produto }: { produto: ProdutoDetalhe }) {
 
 ### Alt text — regras para o cliente
 
-Os campos `alt` são obrigatórios no schema do Sanity (`validation: Rule.required()`). No Studio, o cliente vê a instrução: *"Descreva a imagem com o nome do produto. Ex: Vidro duplo Duo Glass instalado em fachada residencial"*.
+Os campos `alt` são obrigatórios no schema do Sanity (`validation: Rule.required()`). No Studio, o cliente vê a instrução: *"Descreva a imagem com o nome do produto. Ex: Vidro duplo Duoglass instalado em fachada residencial"*.
 
 ### Sitemap dinâmico
 

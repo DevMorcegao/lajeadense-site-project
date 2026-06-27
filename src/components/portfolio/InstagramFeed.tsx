@@ -18,7 +18,7 @@ const FALLBACK_POSTS: InstagramPost[] = [
     mediaUrl: '/images/sobre/lajeadense-vidros-sobre-img1.webp',
     mediaType: 'IMAGE',
     permalink: 'https://instagram.com/lajeadensevidros',
-    caption: 'Fachada de alto padrão executada com vidro duplo termoacústico Duo Glass. Conforto térmico e atenuação acústica em harmonia com o design contemporâneo. 💎🏢 #lajeadensevidros #arquitetura #vidrosdedestaque',
+    caption: 'Fachada de alto padrão executada com vidro duplo termoacústico Duoglass. Conforto térmico e atenuação acústica em harmonia com o design contemporâneo. 💎🏢 #lajeadensevidros #arquitetura #vidrosdedestaque',
     timestamp: new Date().toISOString(),
   },
   {
@@ -26,7 +26,7 @@ const FALLBACK_POSTS: InstagramPost[] = [
     mediaUrl: '/images/sobre/lajeadense-vidros-sobre-img2.webp',
     mediaType: 'IMAGE',
     permalink: 'https://instagram.com/lajeadensevidros',
-    caption: 'Guarda-corpo autoportante com nosso sistema autoportante Wall Glass. Transparência, sofisticação e máxima segurança atendendo rigorosamente à NBR 14718. 📐✨ #guardacorpo #wallglass #segurança',
+    caption: 'Guarda-corpo autoportante com nosso sistema autoportante Wallglass. Transparência, sofisticação e máxima segurança atendendo rigorosamente à NBR 14718. 📐✨ #guardacorpo #wallglass #segurança',
     timestamp: new Date(Date.now() - 86400000).toISOString(),
   },
   {
@@ -34,7 +34,7 @@ const FALLBACK_POSTS: InstagramPost[] = [
     mediaUrl: '/images/sobre/lajeadense-vidros-sobre-img3.webp',
     mediaType: 'IMAGE',
     permalink: 'https://instagram.com/lajeadensevidros',
-    caption: 'Vidro Multilaminado Fort Glass sob medida para coberturas e áreas de alta segurança. Mais proteção e aproveitamento de luz natural para o seu projeto comercial ou residencial. 🔒☀️ #fortglass #arquitetura',
+    caption: 'Vidro Multilaminado Fortglass sob medida para coberturas e áreas de alta segurança. Mais proteção e aproveitamento de luz natural para o seu projeto comercial ou residencial. 🔒☀️ #fortglass #arquitetura',
     timestamp: new Date(Date.now() - 86400000 * 3).toISOString(),
   },
   {

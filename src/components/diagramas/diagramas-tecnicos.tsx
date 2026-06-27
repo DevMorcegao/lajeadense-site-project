@@ -65,12 +65,12 @@ function Cota({ x1, x2, y, label }: { x1: number; x2: number; y: number; label: 
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// 1. DUO GLASS — Vidro Duplo Termoacústico
+// 1. GLASS — Vidro Duplo Termoacústico
 // ═════════════════════════════════════════════════════════════════════════════
 export function DiagramaDuoGlass() {
   return (
-    <Wrapper title="DUO GLASS" sub="Corte Transversal">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Corte transversal do vidro duplo Duo Glass">
+    <Wrapper title="DUOGLASS" sub="Corte Transversal">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Corte transversal do vidro duplo Duoglass">
         {/* Vidro externo */}
         <GlassRect x={18} y={18} w={13} h={84} />
         {/* Espaçador esquerdo */}
@@ -110,12 +110,12 @@ export function DiagramaDuoGlass() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// 2. WALL GLASS — Guarda-Corpo
+// 2. WALLGLASS — Guarda-Corpo
 // ═════════════════════════════════════════════════════════════════════════════
 export function DiagramaWallGlass() {
   return (
-    <Wrapper title="WALL GLASS" sub="Perfil de Instalação">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Perfil de instalação do Wall Glass guarda-corpo">
+    <Wrapper title="WALLGLASS" sub="Perfil de Instalação">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Perfil de instalação do Wallglass guarda-corpo">
         {/* Piso */}
         <rect x={16} y={108} width={90} height={6} fill={TP} opacity="0.12" rx="1" />
         <line x1={16} y1={108} x2={106} y2={108} stroke={CS} strokeWidth="0.8" />
@@ -155,7 +155,7 @@ export function DiagramaWallGlass() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// 3. FORT GLASS — Multilaminado
+// 3. FORTGLASS — Multilaminado
 // ═════════════════════════════════════════════════════════════════════════════
 export function DiagramaFortGlass() {
   // 5 vidros + 4 PVBs: largura total = 5×10 + 4×6 = 74px → inicia x=15
@@ -172,8 +172,8 @@ export function DiagramaFortGlass() {
   ]
 
   return (
-    <Wrapper title="FORT GLASS" sub="Stack Multilaminado">
-      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Stack de camadas do vidro multilaminado Fort Glass">
+    <Wrapper title="FORTGLASS" sub="Stack Multilaminado">
+      <svg viewBox="0 0 300 132" className="w-full h-auto" aria-label="Stack de camadas do vidro multilaminado Fortglass">
         {/* Camadas */}
         {layers.map((l, i) =>
           l.type === 'glass' ? (
