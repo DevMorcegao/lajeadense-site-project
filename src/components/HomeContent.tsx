@@ -11,13 +11,15 @@ import HomePortfolioSection from "@/components/HomePortfolioSection";
 
 interface HomeContentProps {
   children: React.ReactNode;
+  homeImages?: any;
 }
 
-export default function HomeContent({ children }: HomeContentProps) {
+export default function HomeContent({ children, homeImages }: HomeContentProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoadingComplete = useCallback(() => {
     setIsLoading(false);
+    window.dispatchEvent(new Event("homeLoadingComplete"));
   }, []);
 
   return (
@@ -38,8 +40,8 @@ export default function HomeContent({ children }: HomeContentProps) {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <HeroSection />
-          <HomeAboutSection />
-          <HomeProdutosSection />
+          <HomeAboutSection imagemSobre={homeImages?.imagemSobre} />
+          <HomeProdutosSection homeImages={homeImages} />
           <HomeVideosSection />
           <HomePortfolioSection />
           {children}

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Thermometer, Shield, Palette, Maximize, Plus } from "lucide-react";
+import { urlFor } from "@/lib/sanity";
 
 const categories = [
   {
@@ -45,8 +46,28 @@ const categories = [
   },
 ];
 
-export default function HomeProdutosSection() {
+interface HomeProdutosSectionProps {
+  homeImages?: any;
+}
+
+export default function HomeProdutosSection({ homeImages }: HomeProdutosSectionProps) {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+
+  const resolvedCategories = categories.map(cat => {
+    let resolvedImage = cat.image;
+    if (homeImages) {
+      if (cat.id === 1 && homeImages.imagemCategoriaConforto) {
+        resolvedImage = urlFor(homeImages.imagemCategoriaConforto).width(800).height(500).url();
+      } else if (cat.id === 2 && homeImages.imagemCategoriaSeguranca) {
+        resolvedImage = urlFor(homeImages.imagemCategoriaSeguranca).width(800).height(500).url();
+      } else if (cat.id === 3 && homeImages.imagemCategoriaEstetica) {
+        resolvedImage = urlFor(homeImages.imagemCategoriaEstetica).width(800).height(500).url();
+      } else if (cat.id === 4 && homeImages.imagemCategoriaAmplitude) {
+        resolvedImage = urlFor(homeImages.imagemCategoriaAmplitude).width(800).height(500).url();
+      }
+    }
+    return { ...cat, image: resolvedImage };
+  });
 
   return (
     <section className="relative w-full py-24 md:py-32 bg-[#EBEBEA] overflow-hidden">
@@ -80,7 +101,7 @@ export default function HomeProdutosSection() {
 
         {/* Grid de Categorias */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-4 xl:gap-6">
-          {categories.map((category, index) => {
+          {resolvedCategories.map((category, index) => {
             const isHovered = hoveredId === category.id;
 
             return (

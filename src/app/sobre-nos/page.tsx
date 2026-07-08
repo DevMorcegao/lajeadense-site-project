@@ -91,7 +91,7 @@ export default function SobreNos() {
               {/* Imagem Histórica Secundária */}
               <div className="absolute bottom-0 left-0 w-[55%] h-[55%] z-30 shadow-[0_8px_32px_rgba(0,0,0,0.16)] border-[6px] border-[#FFFFFF]">
                 <Image 
-                  src="/images/sobre/lajeadense-vidros-sobre-img2.webp" 
+                  src="/images/sobre/lajeadense-vidros-sobre-img.webp" 
                   alt="Instalações históricas" 
                   fill 
                   className="object-cover"
@@ -114,7 +114,7 @@ export default function SobreNos() {
                 className="text-3xl md:text-4xl font-bold uppercase text-[#0D0D0D] mb-6"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                A Força da Nossa <br/> Origem
+                Desde 1958, <br/> transformando projetos em realidade
               </h2>
               
               <div 

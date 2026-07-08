@@ -177,8 +177,8 @@ export const produtoSchema = defineType({
           ],
         },
       ],
-      description: 'Mínimo 4 fotos. Primeira foto aparece em destaque (largura total).',
-      validation: (Rule: any) => Rule.min(4),
+      description: 'Mínimo 2 fotos. No campo SEO utilize uma descrição válida ou simplesmente "Teste".',
+      validation: (Rule: any) => Rule.min(2),
     }),
 
     // ─── MODELO 3D ────────────────────────────────────────────────────

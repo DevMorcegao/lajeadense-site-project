@@ -6,9 +6,9 @@ export function ProdutosCTA() {
   return (
     <section className="py-20 bg-surface-section px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-6 font-display uppercase">Precisa de um orçamento técnico?</h2>
+        <h2 className="text-3xl font-bold mb-6 font-display uppercase">Precisa de uma solução em vidros?</h2>
         <p className="text-text-secondary mb-8 font-body">
-          Nossa equipe de especialistas está pronta para analisar seu projeto e indicar a melhor solução em vidros.
+          Nossa equipe está pronta para analisar seu projeto e indicar a melhor solução, com qualidade, segurança e atendimento especializado.
         </p>
         <Link 
           href="/contato" 
@@ -27,7 +27,7 @@ export function ProdutosCTA() {
             e.currentTarget.style.backgroundColor = "#C8102E";
           }}
         >
-          Solicitar Orçamento Agora
+          Fale com nossa equipe
         </Link>
       </div>
     </section>

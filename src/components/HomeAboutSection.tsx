@@ -3,8 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { urlFor } from "@/lib/sanity";
 
-export default function HomeAboutSection() {
+interface HomeAboutSectionProps {
+  imagemSobre?: any;
+}
+
+export default function HomeAboutSection({ imagemSobre }: HomeAboutSectionProps) {
+  const imageUrl = imagemSobre
+    ? urlFor(imagemSobre).width(1200).height(750).url()
+    : "/images/home/home-sobre.webp";
   return (
     <section className="relative w-full py-24 md:py-32 bg-[#F5F4F2] overflow-hidden">
       {/* Decorative Isometric Grid Background (Subtle) */}
@@ -80,7 +88,7 @@ export default function HomeAboutSection() {
             >
               {/* As an introductory image, we'll use one of the About images */}
               <Image 
-                src="/images/home/home-sobre.webp" 
+                src={imageUrl} 
                 alt="Instalações e projetos da Lajeadense Vidros"
                 fill
                 className="object-cover"

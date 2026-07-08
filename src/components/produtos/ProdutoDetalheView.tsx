@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { urlFor } from '@/lib/sanity'
 import { ProdutoDetalhe } from '@/lib/types'
 import { ArrowLeft, CheckCircle2, FileText, Layout, X, ChevronLeft, ChevronRight } from 'lucide-react'
-import { DIAGRAMAS, DiagramaGenerico } from '../diagramas'
+// import { DIAGRAMAS, DiagramaGenerico } from '../diagramas'
 
 // Carregamento dinâmico — Three.js não funciona no servidor
 const Viewer3D = dynamic(
@@ -63,7 +63,7 @@ interface ProdutoDetalheViewProps {
 }
 
 export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
-  const Diagrama = DIAGRAMAS[produto.slug] || DiagramaGenerico
+  // const Diagrama = DIAGRAMAS[produto.slug] || DiagramaGenerico
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
@@ -187,6 +187,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
           </div>
 
           {/* Diagrama Técnico SVG (obrigatório) */}
+          {/* 
           <div className="bg-surface-subtle rounded-lg p-6 md:p-8 border border-border-subtle w-full max-w-full overflow-hidden">
             <h2 className="font-display font-bold text-xl uppercase mb-6 flex items-center gap-3 break-words">
               <Layout size={18} strokeWidth={1.5} className="text-action-primary shrink-0" />
@@ -194,6 +195,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
             </h2>
             <Diagrama />
           </div>
+          */}
 
           {/* Especificações Técnicas */}
           {produto.especificacoes && produto.especificacoes.length > 0 && (
@@ -353,7 +355,16 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
 
           {/* Galeria */}
           {produto.galeria && produto.galeria.length > 0 && (
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+            <div className="mt-8 space-y-6">
+              {/* Divisor minimalista com linha fina e rótulo centralizado */}
+              <div className="relative flex items-center py-2">
+                <div className="flex-grow border-t border-border-subtle"></div>
+                <span className="flex-shrink mx-4 text-xs md:text-sm font-bold tracking-[0.2em] text-text-secondary uppercase font-display select-none">
+                  Galeria de Imagens
+                </span>
+                <div className="flex-grow border-t border-border-subtle"></div>
+              </div>
+              <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
               {produto.galeria.map((foto, idx) => (
                 <div
                   key={idx}
@@ -375,6 +386,7 @@ export function ProdutoDetalheView({ produto }: ProdutoDetalheViewProps) {
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 pointer-events-none" />
                 </div>
               ))}
+            </div>
             </div>
           )}
         </div>

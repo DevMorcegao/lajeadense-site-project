@@ -17,7 +17,10 @@ const navLinks = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHomeReady, setIsHomeReady] = useState(false);
   const pathname = usePathname();
+
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +33,18 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Escuta o evento customizado disparado pelo HomeContent quando o loading terminar
+  useEffect(() => {
+    if (!isHomePage) {
+      setIsHomeReady(true);
+      return;
+    }
+
+    const handleHomeReady = () => setIsHomeReady(true);
+    window.addEventListener("homeLoadingComplete", handleHomeReady);
+    return () => window.removeEventListener("homeLoadingComplete", handleHomeReady);
+  }, [isHomePage]);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -51,6 +66,10 @@ export default function Header() {
             ? "bg-[#FFFFFF] shadow-[0_1px_3px_rgba(0,0,0,0.08)] py-4"
             : "bg-transparent py-5 md:py-6"
         }`}
+        style={{
+          opacity: isHomePage && !isHomeReady ? 0 : 1,
+          transition: "opacity 0.5s ease-out",
+        }}
       >
         <div className="container mx-auto px-4 md:px-12 flex items-center justify-between">
           {/* Logo */}
