@@ -13,11 +13,11 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase(1), 300),
-      setTimeout(() => setPhase(2), 1000),
-      setTimeout(() => setPhase(3), 2000),
-      setTimeout(() => setPhase(4), 2800),
-      setTimeout(() => onComplete(), 3400),
+      setTimeout(() => setPhase(1), 200),
+      setTimeout(() => setPhase(2), 700),
+      setTimeout(() => setPhase(3), 1400),
+      setTimeout(() => setPhase(4), 2000),
+      setTimeout(() => onComplete(), 2500),
     ];
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);

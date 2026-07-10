@@ -19,6 +19,8 @@ export default function HomeContent({ children, homeImages }: HomeContentProps) 
 
   const handleLoadingComplete = useCallback(() => {
     setIsLoading(false);
+    // Garante scroll no topo antes de revelar o Header (evita scroll cacheado pelo browser)
+    window.scrollTo(0, 0);
     window.dispatchEvent(new Event("homeLoadingComplete"));
   }, []);
 

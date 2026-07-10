@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight, Maximize2, ExternalLink, Filter } from 'lucide-react'
+import { urlFor } from '@/lib/sanity'
 
 export interface PortfolioCategory {
   _id: string
@@ -91,7 +92,7 @@ export function PortfolioGrid({ categories }: PortfolioGridProps) {
       const isAltPlaceholder = !img.alt || img.alt.trim() === '' || img.alt.toLowerCase() === 'teste'
       return {
         id: img.id,
-        url: img.imagem.asset.url,
+        url: urlFor(img.imagem).width(800).quality(80).url(),
         alt: isAltPlaceholder ? `Projeto executado com ${img.produto.nome}` : img.alt,
         productName: img.produto.nome,
         productSlug: img.produto.slug,

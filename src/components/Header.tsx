@@ -20,7 +20,8 @@ export default function Header() {
   const [isHomeReady, setIsHomeReady] = useState(false);
   const pathname = usePathname();
 
-  const isHomePage = pathname === "/";
+  // Trata pathname null/undefined como Home page para evitar hydration mismatch no SSG
+  const isHomePage = pathname == null || pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,21 +42,25 @@ export default function Header() {
       return;
     }
 
+    // Reseta ao navegar para a Home (protege contra falsos positivos de pathname null anterior)
+    setIsHomeReady(false);
+
     const handleHomeReady = () => setIsHomeReady(true);
     window.addEventListener("homeLoadingComplete", handleHomeReady);
     return () => window.removeEventListener("homeLoadingComplete", handleHomeReady);
   }, [isHomePage]);
 
-  // Close mobile menu when route changes
+  // Fechar menu móvel ao mudar de rota
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Hide header on Sanity Studio routes
+  // Ocultar header nas rotas do Sanity Studio
   if (pathname?.startsWith('/studio')) return null;
 
-  const isDarkHeroPage = pathname === "/" || pathname === "/produtos" || pathname?.startsWith("/portfolio") || pathname?.startsWith("/contato");
-  // The header uses dark text when scrolled, when mobile menu is open, or on pages other than the ones with a dark hero section at the top (since those have light backgrounds)
+  // Protege isDarkHeroPage contra pathname null durante SSG hydration
+  const isDarkHeroPage = pathname == null || pathname === "/" || pathname === "/produtos" || pathname?.startsWith("/portfolio") || pathname?.startsWith("/contato");
+  // O header usa texto escuro quando a página está rolada, quando o menu móvel está aberto, ou em páginas que não possuem uma seção hero escura no topo (pois estas têm fundos claros)
   const isDarkText = isScrolled || isMobileMenuOpen || !isDarkHeroPage;
 
   return (
